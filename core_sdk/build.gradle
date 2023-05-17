@@ -51,16 +51,10 @@ dependencies {
     implementation 'com.huawei.hms:push:6.7.0.300'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.github.ppgco'
-                artifactId = 'ppg-core-android-sdk'
-                version = '0.0.1'
-            }
-        }
+android {
+  publishing {
+    singleVariant("release") {
+        withSourcesJar()
     }
+  }
 }
