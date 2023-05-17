@@ -27,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     buildFeatures {
@@ -44,9 +44,9 @@ android {
 
 dependencies {
     implementation project(path: ':core_sdk')
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
 
@@ -60,11 +60,11 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-core:1.7.2.300'
     implementation 'com.huawei.hms:push:6.7.0.300'
     //compose
-    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation 'androidx.activity:activity-compose:1.7.1'
     //noinspection GradleDependency
     implementation "androidx.compose.ui:ui:1.1.0"
-    implementation "androidx.compose.material:material:1.4.1"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.4.1"
+    implementation "androidx.compose.material:material:1.4.3"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.4.3"
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.40.5"
     kapt 'com.google.dagger:hilt-compiler:2.40.5'
