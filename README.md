@@ -1,4 +1,7 @@
-# Android
+# PushPushGo Core SDK for Android
+
+[![JitPack](https://img.shields.io/jitpack/v/github/ppgco/ppg-core-android-sdk?style=flat-square)](https://jitpack.io/#ppgco/ppg-core-android-sdk)
+![GitHub tag (latest)](https://img.shields.io/github/v/tag/ppgco/ppg-core-android-sdk?style=flat-square)
 
 ### 1. Add dependencies to your project
 
