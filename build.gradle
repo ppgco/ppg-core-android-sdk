@@ -8,8 +8,8 @@ buildscript {
         google()  // Google's Maven repository
 
         mavenCentral()  // Maven Central repository
-        maven { url 'https://jitpack.io' }
         maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
 

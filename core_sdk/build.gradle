@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -48,4 +49,18 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.huawei.agconnect:agconnect-core:1.7.2.300'
     implementation 'com.huawei.hms:push:6.7.0.300'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.ppgco'
+                artifactId = 'ppg-core-android-sdk'
+                version = '0.0.1'
+            }
+        }
+    }
 }
