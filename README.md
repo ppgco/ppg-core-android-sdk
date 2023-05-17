@@ -2,7 +2,7 @@
 
 [![JitPack](https://img.shields.io/jitpack/v/github/ppgco/ppg-core-android-sdk?style=flat-square)](https://jitpack.io/#ppgco/ppg-core-android-sdk)
 ![GitHub tag (latest)](https://img.shields.io/github/v/tag/ppgco/ppg-core-android-sdk?style=flat-square)
-![Discord](https://img.shields.io/discord/XXXXXXXXXXXXXXXXXXXXXX?color=%237289DA&label=Discord&style=flat-square)
+![Discord](https://img.shields.io/discord/1108358192339095662?color=%237289DA&label=Discord&style=flat-square)
 
 ### 1. Add dependencies to your project
 
