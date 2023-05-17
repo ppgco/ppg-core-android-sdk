@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ppg_core_endpoint">https://enunrfkzi9ji.x.pipedream.net</string>
+    <string name="ppg_core_default_channel_id">ppg_core_default</string>
+    <string name="ppg_core_default_channel_name">PPG Core Default Channel</string>
+</resources>
