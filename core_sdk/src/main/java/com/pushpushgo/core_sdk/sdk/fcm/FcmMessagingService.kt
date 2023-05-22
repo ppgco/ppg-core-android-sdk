@@ -7,21 +7,16 @@ import com.pushpushgo.core_sdk.sdk.client.Subscription
 import com.pushpushgo.core_sdk.sdk.client.SubscriptionTypes
 import com.pushpushgo.core_sdk.sdk.notification.PpgNotificationService
 
-abstract class FcmMessagingService(
-    private val config: PpgConfig
-) : FirebaseMessagingService() {
-
-    private val projectId: String =
-        config.fcmProjectId ?: throw java.lang.RuntimeException("config.fcmProjectId is required")
-
+abstract class FcmMessagingService : FirebaseMessagingService() {
     private val fcmNotificationTranslator by lazy { FcmNotificationTranslator() }
-    private val ppgNotificationService by lazy { PpgNotificationService(config, this) }
+    private val ppgNotificationService by lazy { PpgNotificationService(applicationContext) }
+    private val config by lazy { PpgConfig(applicationContext) }
 
     final override fun onNewToken(token: String) {
         this.onNewSubscription(
             Subscription(
                 token = token,
-                project = projectId,
+                project = config.fcmProjectId,
                 type = SubscriptionTypes.FCM
             )
         )

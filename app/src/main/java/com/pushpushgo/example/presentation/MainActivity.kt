@@ -11,7 +11,6 @@ import com.pushpushgo.core_sdk.sdk.utils.PermissionState
 import com.pushpushgo.core_sdk.sdk.utils.PermissionsUtils
 import com.pushpushgo.example.presentation.navigation.SetupNavGraph
 import com.pushpushgo.example.presentation.ui.PushpushgoExampleTheme
-import com.pushpushgo.example.services.MyPpgConfig
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -21,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val mTag: String = javaClass.name
 
     private val ppgClient: PpgCoreClient by lazy {
-        PpgCoreClient(this, MyPpgConfig())
+        PpgCoreClient(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

@@ -7,22 +7,16 @@ import com.pushpushgo.core_sdk.sdk.client.Subscription
 import com.pushpushgo.core_sdk.sdk.client.SubscriptionTypes
 import com.pushpushgo.core_sdk.sdk.notification.PpgNotificationService
 
-abstract class HmsMessagingService(
-    private val config: PpgConfig
-) : HmsMessageService() {
-
-    private val projectId: String =
-        config.hmsAppId ?: throw java.lang.RuntimeException("config.hmsAppId is required")
-
-
+abstract class HmsMessagingService : HmsMessageService() {
     private val hmsNotificationTranslator by lazy { HmsNotificationTranslator() }
-    private val ppgNotificationService by lazy { PpgNotificationService(config, this) }
+    private val ppgNotificationService by lazy { PpgNotificationService(this) }
+    private val config by lazy {PpgConfig(applicationContext)}
 
     final override fun onNewToken(token: String) {
         this.onNewSubscription(
             Subscription(
                 token = token,
-                project = projectId,
+                project = config.hmsAppId,
                 type = SubscriptionTypes.HMS
             )
         )

@@ -27,10 +27,9 @@ import kotlin.random.Random
 
 
 class PpgNotificationService(
-    private val config: PpgConfig,
     private val context: Context
 ) {
-
+    private val config = PpgConfig(context)
     private val notificationManager by lazy { NotificationManagerCompat.from(context) }
     private val httpClient: IHttpApiClient by lazy { HttpApiClient(config) }
 

@@ -14,8 +14,8 @@ import com.pushpushgo.core_sdk.sdk.utils.PlatformUtils
 
 class PpgCoreClient(
     private val activity: AppCompatActivity,
-    private val config: PpgConfig
 ) {
+    private val config = PpgConfig(activity)
     private val receiver by lazy { PpgMessageIntentHandler(config) }
 
     private var provider: AbstractProvider = when (PlatformUtils.getPlatform()) {
