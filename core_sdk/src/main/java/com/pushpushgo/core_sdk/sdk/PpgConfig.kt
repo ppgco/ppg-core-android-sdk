@@ -65,7 +65,7 @@ open class PpgConfig(
             val resourceId = getResourceId(type, name)
             return if (resourceId != 0) context.getString(resourceId) else defaultValue
         } catch (error: Exception) {
-            Log.e("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
+            Log.d("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
             defaultValue
         }
 
@@ -76,7 +76,7 @@ open class PpgConfig(
             val resourceId = getResourceId(type, name)
             return if (resourceId != 0) context.resources.getBoolean(resourceId) else defaultValue
         } catch (error: Exception) {
-            Log.e("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
+            Log.d("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
             defaultValue
         }
 
@@ -90,7 +90,7 @@ open class PpgConfig(
             return stringArray?.mapNotNull { it.toLongOrNull() }?.toLongArray()
                 ?: return defaultValue
         } catch (error: Exception) {
-            Log.e("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
+            Log.d("Cannot find resource ID", "$name, with type $type in ${context.packageName}")
             defaultValue
         }
 
