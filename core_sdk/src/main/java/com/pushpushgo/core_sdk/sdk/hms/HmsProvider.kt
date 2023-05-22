@@ -10,19 +10,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HmsProvider(config: PpgConfig, private val context: Context) : AbstractProvider() {
-    private val hmsAppId =
-        config.hmsAppId ?: throw java.lang.RuntimeException("config.hmsAppId is required")
+class HmsProvider(private val config: PpgConfig, private val context: Context) : AbstractProvider() {
 
     override fun getSubscription(callback: (token: Subscription) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val token = HmsInstanceId.getInstance(context)
-                    .getToken(hmsAppId, "HCM")
+                    .getToken(config.hmsAppId, "HCM")
                 callback(
                     Subscription(
                         token = token,
-                        project = hmsAppId,
+                        project = config.hmsAppId,
                         type = SubscriptionTypes.HMS
                     )
                 )
@@ -36,7 +34,7 @@ class HmsProvider(config: PpgConfig, private val context: Context) : AbstractPro
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 HmsInstanceId.getInstance(context)
-                    .deleteToken(hmsAppId, "HCM")
+                    .deleteToken(config.hmsAppId, "HCM")
                 callback(true)
             } catch (e: Exception) {
                 callback(false)

@@ -11,6 +11,7 @@ import com.pushpushgo.core_sdk.sdk.message.MessageMetadata
 import com.pushpushgo.core_sdk.sdk.utils.TimeHelper
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
 class HttpApiClient(
@@ -59,10 +60,8 @@ class HttpApiClient(
         metadata: MessageMetadata,
         body: JsonElement,
     ) {
-        val requestBody = RequestBody.create(
-            CONTENT_TYPE.toMediaTypeOrNull(),
-            body.toString()
-        )
+        val requestBody = body.toString()
+            .toRequestBody(CONTENT_TYPE.toMediaTypeOrNull())
 
         val path = urlTemplate.replace(
             ":contextId",

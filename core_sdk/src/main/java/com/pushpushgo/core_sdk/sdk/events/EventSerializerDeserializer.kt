@@ -25,17 +25,22 @@ class EventSerializerDeserializer : IEventSerializerDeserializer {
             .asJsonObject
 
         val className = jsonObject.get(EVENT_KEY).asString
-        val cls = Class.forName(className) as Class<Event>
+        val cls = Class.forName(className) as Class<*>
+        val isEventClass = Event::class.java.isAssignableFrom(cls)
+
+        if (!isEventClass) {
+            throw java.lang.Exception("cls is not an instance of Event class")
+        }
         val clsConstructor = cls.getConstructor(MessageMetadata::class.java)
 
         clsConstructor.isAccessible = true
-        val event = clsConstructor.newInstance(
+        val event: Event = clsConstructor.newInstance(
             MessageMetadata(
                 messageId = MessageId(jsonObject.getUuid(MESSAGE_ID_KEY)),
                 foreignId = ForeignId(jsonObject.getStringOrNull(FOREIGN_ID_KEY)),
                 contextId = ContextId(jsonObject.getUuid(CONTEXT_ID_KEY)),
             )
-        )
+        ) as Event
 
         val ts = TimeHelper.fromIso8601String(jsonObject.get(TIME_STAMP_KEY).asString)
         event.createdAt.time = ts.time

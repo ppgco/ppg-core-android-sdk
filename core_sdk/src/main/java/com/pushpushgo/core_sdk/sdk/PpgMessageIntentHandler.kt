@@ -73,7 +73,7 @@ open class PpgMessageIntentHandler(
         }
     }
 
-    private fun handleCloseAction(context: Context, remotePpgMessage: RemotePpgMessage) {
+    private fun handleCloseAction(_context: Context, remotePpgMessage: RemotePpgMessage) {
         httpClient.registerClosed(
             NotificationClosed(
                 remotePpgMessage.getMessageMetadata()

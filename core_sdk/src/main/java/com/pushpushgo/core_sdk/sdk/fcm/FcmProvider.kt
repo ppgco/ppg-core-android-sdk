@@ -6,9 +6,7 @@ import com.pushpushgo.core_sdk.sdk.client.AbstractProvider
 import com.pushpushgo.core_sdk.sdk.client.Subscription
 import com.pushpushgo.core_sdk.sdk.client.SubscriptionTypes
 
-class FcmProvider(config: PpgConfig) : AbstractProvider() {
-    private val fcmProjectId =
-        config.fcmProjectId ?: throw java.lang.RuntimeException("config.fcmProjectId id required")
+class FcmProvider(private val config: PpgConfig) : AbstractProvider() {
 
     private val firebase: FirebaseMessaging by lazy {
         FirebaseMessaging.getInstance()
@@ -19,7 +17,7 @@ class FcmProvider(config: PpgConfig) : AbstractProvider() {
             callback(
                 Subscription(
                     token = it,
-                    project = fcmProjectId,
+                    project = config.fcmProjectId,
                     type = SubscriptionTypes.FCM
                 )
             )
