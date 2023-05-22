@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get the release version, removing the v from the tag
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+
+    - name: Request release from JitPack to trigger build
+      run: |
+        JITPACK_URL="https://jitpack.io/com/github/ppgco/ppg-core-android-sdk/${{ steps.get_version.outputs.VERSION }}/"
+        # timeout in 30 seconds to avoid waiting for build
+        curl -s -m 30 ${JITPACK_URL} || true
