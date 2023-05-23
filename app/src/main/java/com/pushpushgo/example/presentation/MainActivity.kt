@@ -1,6 +1,8 @@
 package com.pushpushgo.example.presentation
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -59,14 +61,36 @@ class MainActivity : AppCompatActivity() {
             }
             PermissionState.ASK -> {
                 Log.d(mTag, "Notifications ask")
-                PermissionsUtils.requestPermissions(this) {
-                    Log.d(mTag, "Notification ask result: $it")
+                if (Build.VERSION.SDK_INT > 32) {
+                    PermissionsUtils.requestPermissions(this) {
+                        Log.d("Ask result:", it.toString())
+                    }
                 }
             }
         }
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PermissionsUtils.PERMISSION_REQUEST_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.d("Allow", "Allow")
+                } else {
+                    Log.d("Deny", "Deny")
+                }
+                return
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
         Log.d(mTag, "onResume in main activity intent: $intent")

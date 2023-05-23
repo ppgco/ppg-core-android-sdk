@@ -1,6 +1,7 @@
 package com.pushpushgo.core_sdk.sdk.utils
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -12,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 
 open class PermissionsUtils(
-    private val activity: AppCompatActivity
+    private val activity: Activity
 ) {
     private val TAG = this::class.java.name
     private var notificationManager = NotificationManagerCompat.from(activity)
@@ -20,7 +21,8 @@ open class PermissionsUtils(
     private fun areNotificationsEnabled(): Boolean = notificationManager.areNotificationsEnabled()
 
     companion object {
-        fun check(activity: AppCompatActivity): PermissionState {
+        const val PERMISSION_REQUEST_CODE = 112
+        fun check(activity: Activity): PermissionState {
             val instance = PermissionsUtils(activity);
             return instance.checkPermissions();
         }
@@ -30,6 +32,13 @@ open class PermissionsUtils(
                 .registerForActivityResult(ActivityResultContracts.RequestPermission(), callback)
                 .launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+        fun requestPermissions(activity: Activity) {
+            activity.requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), PERMISSION_REQUEST_CODE)
+
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

@@ -1,8 +1,8 @@
 package com.pushpushgo.core_sdk.sdk.client
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import com.pushpushgo.core_sdk.sdk.PpgMessageIntentHandler
 import com.pushpushgo.core_sdk.sdk.PpgConfig
 import com.pushpushgo.core_sdk.sdk.fcm.FcmProvider
@@ -13,7 +13,7 @@ import com.pushpushgo.core_sdk.sdk.utils.PlatformEnum
 import com.pushpushgo.core_sdk.sdk.utils.PlatformUtils
 
 class PpgCoreClient(
-    private val activity: AppCompatActivity,
+    private val activity: Activity,
 ) {
     private val config = PpgConfig(activity)
     private val receiver by lazy { PpgMessageIntentHandler(config) }
