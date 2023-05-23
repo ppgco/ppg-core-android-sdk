@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "root"
-include ':app'
 include ':core_sdk'
+if (!System.env.JITPACK) include ':app'
