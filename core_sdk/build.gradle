@@ -51,12 +51,9 @@ dependencies {
     compileOnly 'com.huawei.hms:push:6.7.0.300'
 }
 
-android {
-  publishing {
-    singleVariant("release") {
-        withSourcesJar()
-    }
-  }
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
 }
 
 afterEvaluate {
@@ -66,7 +63,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.ppgco'
                 artifactId = 'ppg-core-android-sdk'
-                version = '0.0.7'
+                version = '0.0.8'
             }
         }
     }
