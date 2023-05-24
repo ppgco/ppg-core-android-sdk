@@ -61,7 +61,7 @@ open class PpgMessageIntentHandler(
             )) -> {
                 startBrowserActivity(context, url)
             }
-            url != null && url.toString().startsWith(protocolApp) -> {
+            url != null -> {
                 startAppActivityOnStack(context, url)
             }
             else -> {
@@ -148,7 +148,6 @@ open class PpgMessageIntentHandler(
     }
 
     companion object {
-        const val protocolApp = "app://"
         const val protocolHttps = "https://"
         const val protocolHttp = "http://"
     }
