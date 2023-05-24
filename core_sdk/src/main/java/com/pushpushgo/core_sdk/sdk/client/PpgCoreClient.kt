@@ -3,6 +3,9 @@ package com.pushpushgo.core_sdk.sdk.client
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.pushpushgo.core_sdk.sdk.PpgMessageIntentHandler
 import com.pushpushgo.core_sdk.sdk.PpgConfig
 import com.pushpushgo.core_sdk.sdk.fcm.FcmProvider
@@ -47,5 +50,29 @@ class PpgCoreClient(
 
     fun onReceive(context: Context, intent: Intent?) {
         receiver.handleIntent(context, intent)
+    }
+
+    fun register(activity: AppCompatActivity,callback: (subscription: Subscription?) -> Unit) {
+        when (check()) {
+            PermissionState.ALLOWED -> {
+                getSubscription(callback)
+            }
+            PermissionState.DENIED -> {
+                callback(null)
+            }
+            PermissionState.RATIONALE -> {
+                getSubscription(callback)
+            }
+            PermissionState.ASK -> {
+                if (Build.VERSION.SDK_INT > 32) {
+                    PermissionsUtils.requestPermissions(activity) { result ->
+                        if (result == true) {
+                            getSubscription(callback)
+                        }
+                    }
+                }
+                callback(null)
+            }
+        }
     }
 }

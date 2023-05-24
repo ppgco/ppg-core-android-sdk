@@ -1,7 +1,5 @@
 package com.pushpushgo.example.services
 
-import android.util.Log
-import com.pushpushgo.core_sdk.sdk.client.Subscription
 import com.pushpushgo.core_sdk.sdk.fcm.FcmMessagingService
 
 /**
@@ -9,7 +7,4 @@ import com.pushpushgo.core_sdk.sdk.fcm.FcmMessagingService
  * On this event we should save "subscription" to database.
  */
 class MyFirebaseMessagingService : FcmMessagingService() {
-    override fun onNewSubscription(subscription: Subscription) {
-        Log.d("onNewSubscription", "Save this data in your database ${subscription.toJSON()}");
-    }
 }

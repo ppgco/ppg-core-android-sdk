@@ -43,31 +43,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        when (ppgClient.check()) {
-            PermissionState.ALLOWED -> {
-                Log.d(mTag, "Notifications allowed")
-                ppgClient.getSubscription {
-                    Log.d(mTag, it.toJSON())
-                }
-            }
-            PermissionState.DENIED -> {
-                Log.d(mTag, "Notifications denied")
-            }
-            PermissionState.RATIONALE -> {
-                Log.d(mTag, "Notifications rationale")
-                ppgClient.getSubscription {
-                    Log.d(mTag, it.toJSON())
-                }
-            }
-            PermissionState.ASK -> {
-                Log.d(mTag, "Notifications ask")
-                if (Build.VERSION.SDK_INT > 32) {
-                    PermissionsUtils.requestPermissions(this) {
-                        Log.d("Ask result:", it.toString())
-                    }
-                }
-            }
-        }
+       ppgClient.register(this) {
+           it?.let { subscription -> Log.d(mTag, subscription.toJSON()) }
+       }
 
     }
 
