@@ -14,7 +14,6 @@ Project integrated with FCM or HMS.
 dependencies {  
 // PPG Core jitpack
   implementation "com.github.ppgco:ppg-core-android-sdk:0.0.13"
-
 // FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
@@ -51,8 +50,11 @@ To satisfy required parameters for PPG Core sdk you should create .xml file with
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Required fields  -->
     <string name="default_fcm_project_id">Get_value_from_google-services.json</string>
+    <drawable name="default_notification_icon">@drawable/ic_launcher_foreground</drawable>
     <string name="default_hms_app_id">Get_value_from_hms_developer_account</string>
+    <!-- Optional fields -->
     <string name="default_channel_id">ppg_core_default</string>
     <string name="default_channel_name">PPG Core Default Channel</string>
     <bool name="default_channel_badge_enabled">true</bool>
@@ -65,9 +67,9 @@ To satisfy required parameters for PPG Core sdk you should create .xml file with
 ```
 Default channel badge is set to true by default. You can modify badge number in notification payload. (See send notification)
 
-Vibration pattern - (before start delay, first vibration duration, between vibartions delay, second vibration duration, after vibrations delay). Values in miliseconds.
+Vibration pattern - (before start delay, first vibration duration, between vibrations delay, second vibration duration, after vibrations delay). Values in milliseconds.
 
-To set channel sound you have to place your sound file in `res/raw/` folder and set it's name in like in example above. (without extenstion) 
+To set channel sound you have to place your sound file in `res/raw/` folder and set it's name in like in example above. (without extension) 
 
 Support for adding more than one default channel will be added soon. 
 > **IMPORTANT:** Be careful when setting notification channel options. Once a channel is set, its settings cannot be overriden. Consider testing different settings on staging environment before production release. However you can change name of default channel to create new channel with new settings.
@@ -89,11 +91,6 @@ Support for adding more than one default channel will be added soon.
     <action android:name="com.google.firebase.MESSAGING_EVENT" />  
   </intent-filter>
 </service>
-```
-If you want to support using default notification icon for older API's (21+) you can specify <*meta-data*> tag with icon resource, e.g:
-```xml
-<meta-data android:name="com.google.firebase.messaging.default_notification_icon"  
-  android:resource="@drawable/ic_launcher_foreground" />
 ```
 #### 3.3 Inside main <*activity*> tag:
 Specify launchMode:
