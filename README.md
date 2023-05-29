@@ -7,6 +7,54 @@
 ## Requirements:
 Project integrated with FCM or HMS.
 
+## Product Info
+
+PushPushGo Core* is a building block for push notifications:
+ - sender for push notifications - we handle batch requests, aggregate feedback events and inform your webhook
+ - images storage & traffic - we handle, crop and serve your push images
+ - fast implementation - we cover Android, iOS, Web with push notifications support
+ - you own your database and credentials - no vendor lock-in - we provide infrastructure, sdk & support
+ - simple API - we provide one API for all providers
+
+Contact: support+core@pushpushgo.com or [Discord](https://discord.gg/NVpUWvreZa)
+
+<sub>PushPushGo Core is not the same as PushPushGo product - if you are looking for [PushPushGo - Push Notifications Management Platform](https://pushpushgo.com)</sub>
+
+## How it works
+
+IMAGE HERE
+
+When you send request to our API to send message, we prepare images and then connect to different providers. 
+
+When message is delieverd to the device and interacts with user, we collect events and pass them to our API.
+
+After a short time you will recieve package with events on your webhook:
+
+```json
+{
+    "messages": [
+        {
+            "messageId": "8e3075f1-6b21-425a-bb4f-eeaf0eac93a2",
+            "foreignId": "my_id",
+            "result": {
+                "kind": "sent"
+            },
+            "ts": 1685009020243
+        },
+        {
+            "messageId": "8e3075f1-6b21-425a-bb4f-eeaf0eac93a2",
+            "foreignId": "my_id",
+            "result": {
+                "kind": "delivered"
+            },
+            "ts": 1685009020564
+        }
+    ]
+}
+```
+
+Using that data you can calculate statistics or do some of your business logic.
+
 ## 1. Add dependencies to your project
 
 ```gradle
