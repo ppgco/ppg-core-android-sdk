@@ -3,18 +3,21 @@
 [![JitPack](https://img.shields.io/jitpack/v/github/ppgco/ppg-core-android-sdk?style=flat-square)](https://jitpack.io/#ppgco/ppg-core-android-sdk)
 ![GitHub tag (latest)](https://img.shields.io/github/v/tag/ppgco/ppg-core-android-sdk?style=flat-square)
 ![Discord](https://img.shields.io/discord/1108358192339095662?color=%237289DA&label=Discord&style=flat-square)
+## Requirements:
+Project integrated with FCM or HMS.
 
-### 1. Add dependencies to your project
+## 1. Add dependencies to your project
 
-```
+```gradle
 // build.gradle (:app)
 dependencies {  
-// jitpack
-  implementation "repo.z.jitpacka" //TODO jitpack
-// FCM
+// PPG Core jitpack
+  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.13"
+
+// FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
-// HMS
+// HMS - use this for Harmony system
   implementation 'com.huawei.agconnect:agconnect-core:1.7.2.300'  
   implementation 'com.huawei.hms:push:6.7.0.300'   
 }
@@ -28,67 +31,56 @@ allprojects {
 }
 ```
 
-### 2. Add service files
+## 2. Add required files
 In case of example we store our files in **services** folder
-#### 2.1 MyPpgConfig (/services/MyPpgConfig) //TODO jitpack
-File should contain class which inherits from sdk's **PpgConfig** class. Example MyPpgConfig file:
-```
-import android.graphics.Color  
-import com.pushpushgo.core_sdk.sdk.PpgConfig  
-import com.pushpushgo.example.R  
-  
-class MyPpgConfig: PpgConfig( 
-  //Default notification Icon settings 
-  defaultNotificationIcon = R.drawable.ic_launcher_foreground,  
-  defaultNotificationIconColor = Color.RED,
-  // PPG endpoint - leave unchanged  
-  ppgCoreEndpoint = "https://ppg-core.master1.qappg.co",
-  // FCM project ID / HMS app ID  
-  fcmProjectId = "test-64257",  
-  hmsAppId = "1234567890",
-  // Default notification channel settings  
-  defaultChannelId = "MyId1",  
-  defaultChannelName = "PushPushGoExample",
-  // All below are optional
-  defaultChannelBadgeEnabled = true,  
-  defaultChannelVibrationEnabled = true,  
-  defaultChannelVibrationPattern = longArrayOf(0, 1000, 500, 1500, 1000),  
-  defaultChannelSound = R.raw.magic_tone, 
-  defaultChannelLightsEnabled = true, 
-  defaultChannelLightsColor = Color.MAGENTA  
-)
-```
-Vibration pattern - (before start delay, first vibration duration, between vibartions delay, second vibration duration, after vibrations delay). Values in miliseconds.
-Support for adding more than one default channel will be added soon. 
-> **IMPORTANT:** Be careful when setting notification channel options. Once a channel is set, its settings cannot be overriden. Consider testing different settings on staging environment before production release.
 
-#### 2.1 MyFirebaseMessagingService (/services/MyFirebaseMessagingService) //TODO jitpack
+### 2.1 **MyFirebaseMessagingService** (/services/MyFirebaseMessagingService)
 File should contain class which inherits from sdk's **FcmMessagingService** class.
-You should provide MyPpgConfig() class which you created in previous step as constructor for **FcmMessagingService**
-**onNewSubscription** function should be implemented in way that allows you to save "subscription" in your database.
+
 Example file:
-```
-import android.util.Log  
-import com.pushpushgo.core_sdk.sdk.client.Subscription  
+
+```kotlin
 import com.pushpushgo.core_sdk.sdk.fcm.FcmMessagingService  
   
-class MyFirebaseMessagingService : FcmMessagingService(MyPpgConfig()) {  
-    override fun onNewSubscription(subscription: Subscription) {  
-        Log.d("onNewSubscription", "Save this data in your database ${subscription.toJSON()}");  
-  }  
-}
+class MyFirebaseMessagingService : FcmMessagingService() {}
 ```
+### 2.2 Create resources values
+To satisfy required parameters for PPG Core sdk you should create .xml file with values.
 
-### 3. AndroidManifest.xml
-
-#### 3.1 At the top of your manifest file add:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_fcm_project_id">Get_value_from_google-services.json</string>
+    <string name="default_hms_app_id">Get_value_from_hms_developer_account</string>
+    <string name="default_channel_id">ppg_core_default</string>
+    <string name="default_channel_name">PPG Core Default Channel</string>
+    <bool name="default_channel_badge_enabled">true</bool>
+    <bool name="default_channel_vibration_enabled">true</bool>
+    <string-array name="default_vibration_pattern">0, 1000, 500, 1500, 1000</string-array>
+    <bool name="default_channel_lights_enabled">true</bool>
+    <color name="default_lights_color">#ff00ff</color>
+    <string name="default_channel_sound">magic_tone</string>
+</resources>
 ```
+Default channel badge is set to true by default. You can modify badge number in notification payload. (See send notification)
+
+Vibration pattern - (before start delay, first vibration duration, between vibartions delay, second vibration duration, after vibrations delay). Values in miliseconds.
+
+To set channel sound you have to place your sound file in `res/raw/` folder and set it's name in like in example above. (without extenstion) 
+
+Support for adding more than one default channel will be added soon. 
+> **IMPORTANT:** Be careful when setting notification channel options. Once a channel is set, its settings cannot be overriden. Consider testing different settings on staging environment before production release. However you can change name of default channel to create new channel with new settings.
+
+## 3. AndroidManifest.xml
+
+### 3.1 At the top of your manifest file add:
+```xml
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>  
 <!-- If you want to support vibration -->
 <uses-permission android:name="android.permission.VIBRATE"/>
 ```
-#### 3.2 Inside <*application*> tag add MyFirebaseMessagingService from previous step:
-```
+### 3.2 Inside <*application*> tag add **MyFirebaseMessagingService** from previous step:
+```xml
 <service  
   android:name=".services.MyFirebaseMessagingService"  
   android:exported="false">  
@@ -98,26 +90,26 @@ class MyFirebaseMessagingService : FcmMessagingService(MyPpgConfig()) {
 </service>
 ```
 If you want to support using default notification icon for older API's (21+) you can specify <*meta-data*> tag with icon resource, e.g:
-```
+```xml
 <meta-data android:name="com.google.firebase.messaging.default_notification_icon"  
   android:resource="@drawable/ic_launcher_foreground" />
 ```
 #### 3.3 Inside main <*activity*> tag:
 Specify launchMode:
-```
+```xml
 <activity
   android:launchMode="singleTop"
   ...
 ```
 also add intent filter for handling notification events:
-```
+```xml
 <intent-filter>  
  <action android:name="PUSH_CLICK" />  
  <action android:name="PUSH_CLOSE" />  
 </intent-filter>
 ```
-to handle web/app/deepLinks redirect add another intent filter:
-```
+to handle web/app/deepLinks redirects add another intent filter in your activity (this cannot be done in `.LAUNCHER` intent):
+```xml
 <intent-filter>  
  <action android:name="android.intent.action.VIEW" />  
  <category android:name="android.intent.category.DEFAULT" />  
@@ -130,38 +122,44 @@ to handle web/app/deepLinks redirect add another intent filter:
 
 > **IMPORTANT:** multiple `<data>` elements in the same intent filter are actually merged together to match all variations of their combined attributes.
 
-### 4. Usage  //TODO jitpack
+### 4. Usage
 In your MainActivity file initialize ppgClient:
 
-```
+```kotlin
 private val ppgClient: PpgCoreClient by lazy {  
-//this -> activity context
-//MyPpgConfig() -> /services/MyPpgConfig
-  PpgCoreClient(this, MyPpgConfig())  
+  //this -> activity context
+  PpgCoreClient(this)  
 }
 ```
-Add **ppgClient.onReceive(this, intent)** to functions onNewIntent, onCreate, onResume:
-```
+Add **ppgClient.onReceive(this, intent)** to MainActivity functions `onNewIntent, onCreate, onResume`:
+```kotlin
 override fun onNewIntent(intent: Intent?) {  
     super.onNewIntent(intent)  
-    Log.d(mTag, "onnewIntent in main activity intent: $intent")
     ppgClient.onReceive(this, intent)  
 }
 
 override fun onCreate(savedInstanceState: Bundle?) {  
     super.onCreate(savedInstanceState)  
-  
-    Log.d(mTag, "onCreate in main activity intent: $intent")  
-  
     ppgClient.onReceive(this, intent)
 }
 
 override fun onResume() {  
-    super.onResume()  
-    Log.d(mTag, "onResume in main activity intent: $intent")  
+    super.onResume()   
     ppgClient.onReceive(this, intent)  
 }
 
 ```
 
-Inside onCreate function you should implement registration for notifications. You can find example implementation in our example app (com.pushpushgo.example)
+Inside onCreate function you can implement registration for notifications.
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    ppgClient.onReceive(this, intent)
+    ppgClient.register(this) {
+        it?.let { subscription -> Log.d(mTag, subscription.toJSON()) }
+    }
+}
+```
+
+**Save subscription in your database. Now you can send notifications via our API [Example JS sdk sender](https://github.com/ppgco/ppg-core-js-sdk/tree/main/examples/sender)**
