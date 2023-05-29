@@ -22,7 +22,7 @@ dependencies {
   implementation 'com.huawei.hms:push:6.7.0.300'   
 }
 
-// build.gradle (root)
+// build.gradle (root) or settings.gradle (dependencyResolutionManagement)
 allprojects {
     repositories {
         // jitpack
@@ -155,7 +155,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     ppgClient.onReceive(this, intent)
     ppgClient.register(this) {
-        it?.let { subscription -> Log.d(mTag, subscription.toJSON()) }
+        it?.let { subscription -> Log.d("Subscription", subscription.toJSON()) }
     }
 }
 ```
