@@ -223,12 +223,13 @@ class PpgNotificationService(
         }
 
         // Support for API < 26
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            var defaults = 0
             if (config.defaultChannelVibrationPattern.isNotEmpty()) {
                 val vibrationPattern = config.defaultChannelVibrationPattern
                 notificationBuilder.setVibrate(vibrationPattern)
             } else {
-                notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE)
+                defaults = Notification.DEFAULT_VIBRATE
             }
 
             if (config.defaultChannelSound != 0) {
@@ -238,14 +239,15 @@ class PpgNotificationService(
                     soundUri
                 )
             } else {
-                notificationBuilder.setDefaults(Notification.DEFAULT_SOUND)
+                defaults = defaults or Notification.DEFAULT_SOUND
             }
 
             if (config.defaultChannelLightsEnabled) {
                 notificationBuilder.setLights(config.defaultChannelLightsColor, 500, 500)
             } else {
-                notificationBuilder.setDefaults(Notification.DEFAULT_LIGHTS)
+                defaults = defaults or Notification.DEFAULT_LIGHTS
             }
+            notificationBuilder.setDefaults(defaults)
         }
 
 

@@ -13,7 +13,7 @@ Project integrated with FCM or HMS.
 // build.gradle (:app)
 dependencies {  
 // PPG Core jitpack
-  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.13"
+  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.14"
 // FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
