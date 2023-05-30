@@ -82,7 +82,7 @@ allprojects {
 ## 2. Add required files
 In case of example we store our files in **services** folder
 
-### 2.1 **MyFirebaseMessagingService** (/services/MyFirebaseMessagingService)
+### 2.1 For FCM - **MyFirebaseMessagingService** (/services/MyFirebaseMessagingService)
 File should contain class which inherits from sdk's **FcmMessagingService** class.
 
 Example file:
@@ -92,16 +92,27 @@ import com.pushpushgo.core_sdk.sdk.fcm.FcmMessagingService
   
 class MyFirebaseMessagingService : FcmMessagingService() {}
 ```
-### 2.2 Create resources values
+### 2.2 For HMS - **MyHMSMessagingService** (/services/MyHMSMessagingService)
+File should contain class which inherits from sdk's **HmsMessagingService** class.
+Example file:
+
+```kotlin
+import com.pushpushgo.core_sdk.sdk.hms.HmsMessagingService  
+  
+class MyHMSMessagingService : HmsMessagingService() {}
+```
+
+### 2.3 Create resources values
 To satisfy required parameters for PPG Core sdk you should create .xml file with values.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Required fields  -->
-    <string name="default_fcm_project_id">Get_value_from_google-services.json</string>
-    <drawable name="default_notification_icon">@drawable/ic_launcher_foreground</drawable>
+    <string name="default_fcm_project_id">Get_value_from_google-services.json</string> 
     <string name="default_hms_app_id">Get_value_from_hms_developer_account</string>
+    <!-- Choose HMS or FCM - remove other one -->
+    <drawable name="default_notification_icon">@drawable/ic_launcher_foreground</drawable>
     <!-- Optional fields -->
     <string name="default_channel_id">ppg_core_default</string>
     <string name="default_channel_name">PPG Core Default Channel</string>
@@ -130,7 +141,7 @@ Support for adding more than one default channel will be added soon.
 <!-- If you want to support vibration -->
 <uses-permission android:name="android.permission.VIBRATE"/>
 ```
-### 3.2 Inside <*application*> tag add **MyFirebaseMessagingService** from previous step:
+### 3.2 Inside <*application*> tag add previously created service name:
 ```xml
 <service  
   android:name=".services.MyFirebaseMessagingService"  
