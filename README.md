@@ -61,7 +61,7 @@ Using that data you can calculate statistics or do some of your business logic.
 // build.gradle (:app)
 dependencies {  
 // PPG Core jitpack
-  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.14"
+  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.26"
 // FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
@@ -142,6 +142,7 @@ Support for adding more than one default channel will be added soon.
 <uses-permission android:name="android.permission.VIBRATE"/>
 ```
 ### 3.2 Inside <*application*> tag add previously created service name:
+#### For FCM
 ```xml
 <service  
   android:name=".services.MyFirebaseMessagingService"  
@@ -151,7 +152,17 @@ Support for adding more than one default channel will be added soon.
   </intent-filter>
 </service>
 ```
-#### 3.3 Inside main <*activity*> tag:
+#### For HMS
+```xml
+<service
+  android:name=".service.MyHMSMessagingService"
+  android:exported="false">
+  <intent-filter>
+    <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+  </intent-filter>
+</service>
+```
+### 3.3 Inside main <*activity*> tag:
 Specify launchMode:
 ```xml
 <activity

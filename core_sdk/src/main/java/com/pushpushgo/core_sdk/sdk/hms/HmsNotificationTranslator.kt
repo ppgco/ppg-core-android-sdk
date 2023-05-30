@@ -14,16 +14,15 @@ open class HmsNotificationTranslator : INotificationTranslator<RemoteMessage> {
             .parseString(remoteMessage.data)
             .asJsonObject
 
-        val silentData = jsonObject.getStringOrNull(RemotePpgMessage.SILENT_DATA_KEY)
-        val ppgData = jsonObject.getStringOrNull(RemotePpgMessage.PPG_DATA_KEY)
-
         return when {
-            (silentData != null) -> PpgRawNotification.Silent(
-                silentData
-            )
-            (ppgData != null) -> PpgRawNotification.Data(
-                ppgData
-            )
+            jsonObject.has(RemotePpgMessage.PPG_DATA_KEY) -> {
+                val ppgData = jsonObject.getStringOrNull(RemotePpgMessage.PPG_DATA_KEY)
+                PpgRawNotification.Data(ppgData.toString())
+            }
+            jsonObject.has(RemotePpgMessage.SILENT_DATA_KEY) -> {
+                PpgRawNotification.Silent(jsonObject.toString())
+            }
+
             else -> PpgRawNotification.Unknown()
         }
     }

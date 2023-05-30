@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="default_ppg_core_endpoint">https://api-core.pushpushgo.com/v1</string>
-    <drawable name="default_notification_icon">@drawable/ic_launcher_foreground</drawable>
+<!--    <drawable name="default_notification_icon">@drawable/default_notification_icon</drawable>-->
     <string name="default_fcm_project_id">test-64257</string>
     <string name="default_hms_app_id">1234567890</string>
     <string name="default_channel_id">ppg_core_default3</string>
