@@ -6,6 +6,8 @@
 ![Discord](https://img.shields.io/discord/1108358192339095662?color=%237289DA&label=Discord&style=flat-square)
 ## Requirements:
 Project integrated with FCM or HMS.
+In case of HMS your package must be signed for debug/release and SHA fingerprint of certificate must be added in HMS developer app settings.
+Otherwise u will encounter 6003 error during receiving push notifications.
 
 ## Product Info
 
