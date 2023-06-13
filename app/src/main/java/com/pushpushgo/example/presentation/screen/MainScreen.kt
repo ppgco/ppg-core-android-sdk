@@ -9,14 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.pushpushgo.core_sdk.sdk.message.ContextId
-import com.pushpushgo.core_sdk.sdk.message.ForeignId
-import com.pushpushgo.core_sdk.sdk.message.MessageId
-import com.pushpushgo.core_sdk.sdk.message.MessageMetadata
 import com.pushpushgo.core_sdk.sdk.notification.Action
 import com.pushpushgo.example.presentation.MainViewModel
 import com.pushpushgo.core_sdk.sdk.notification.PpgNotification
 import com.pushpushgo.core_sdk.sdk.notification.RemotePpgMessage
+import com.pushpushgo.core_sdk.sdk.notification.SilentPpgMessage
 import com.pushpushgo.example.presentation.navigation.MY_ARG
 import com.pushpushgo.example.presentation.navigation.MY_URI
 
@@ -24,11 +21,13 @@ import com.pushpushgo.example.presentation.navigation.Screen
 import java.util.*
 
 val pushSilent: PpgNotification = PpgNotification.Silent(
-    MessageMetadata(
-        messageId = MessageId(UUID.randomUUID()),
-        contextId = ContextId(UUID.randomUUID()),
-        foreignId = ForeignId(UUID.randomUUID().toString()),
-    ))
+    SilentPpgMessage(
+        UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(),
+        externalData = ""
+    )
+)
 
 val pushDataTitleBody: PpgNotification = PpgNotification.Data(
     RemotePpgMessage(
@@ -36,7 +35,8 @@ val pushDataTitleBody: PpgNotification = PpgNotification.Data(
         UUID.randomUUID().toString(),
         UUID.randomUUID().toString(),
         "Title of message",
-        "Body of message"
+        "Body of message",
+        externalData = ""
     )
 )
 
@@ -47,7 +47,8 @@ val pushDataWithIcon: PpgNotification = PpgNotification.Data(
         UUID.randomUUID().toString(),
         "Title of message",
         "Body of message",
-        "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w"
+        "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
+        externalData = ""
     )
 )
 
@@ -68,7 +69,8 @@ val pushDataWithIconImageOneAction: PpgNotification = PpgNotification.Data(
                 title = "example.com",
                 icon = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
             )
-        )
+        ),
+        externalData = ""
     )
 )
 
@@ -93,7 +95,8 @@ val pushDataWithIconAndTwoActions: PpgNotification = PpgNotification.Data(
                 title = "wp.pl",
                 icon = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
             )
-        )
+        ),
+        externalData = ""
     )
 )
 
@@ -106,6 +109,7 @@ val pushDataWithIconImage: PpgNotification = PpgNotification.Data(
         "Body of message",
         "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
         "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9pbWctOWdhZy1mdW4uOWNhY2hlLmNvbS9waG90by9hS0VFV0ExXzQ2MHN3cC53ZWJwIiwidyI6MTAwMCwiaCI6MTAwMCwiZSI6IldFQlAifQ.b6P_zB3LNy4R8EsxvxENnHXVmgCelcs2Kx_Ulz503ME",
+        externalData = ""
     )
 )
 
@@ -119,7 +123,8 @@ val pushDataWithDeepLink: PpgNotification = PpgNotification.Data(
         icon = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
         image = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9pbWctOWdhZy1mdW4uOWNhY2hlLmNvbS9waG90by9hS0VFV0ExXzQ2MHN3cC53ZWJwIiwidyI6MTAwMCwiaCI6MTAwMCwiZSI6IldFQlAifQ.b6P_zB3LNy4R8EsxvxENnHXVmgCelcs2Kx_Ulz503ME",
         smallIcon = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
-        defaultAction = "$MY_URI/$MY_ARG=Coming from Notification"
+        defaultAction = "$MY_URI/$MY_ARG=Coming from Notification",
+        externalData = ""
     )
 )
 
@@ -138,7 +143,8 @@ val pushDataWithDeepLinkInAction: PpgNotification = PpgNotification.Data(
                 title = "DeepLink in action",
                 icon = "https://ppg-image.pushpushgo.com/i/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1IjoiaHR0cHM6Ly9mYXN0bHkucGljc3VtLnBob3Rvcy9pZC8xMy8zMDAvMjAwLmpwZz9obWFjPTJMdjBfc0ZaT1ZfZ3dXWHdtOHduV2FqZkZnVDVEQkdFQ3RMMVRWSldiQjQiLCJ3Ijo2NCwiaCI6NjQsImUiOiJXRUJQIn0.77hXHDAeIq-xBwiZ8G2zi-HEu986tCprnJ0brFFrq-w",
             )
-        )
+        ),
+        externalData = ""
     )
 )
 

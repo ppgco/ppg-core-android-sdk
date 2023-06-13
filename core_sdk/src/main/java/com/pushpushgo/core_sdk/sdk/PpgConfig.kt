@@ -6,6 +6,16 @@ import android.util.Log
 open class PpgConfig(
     private val context: Context
     ) {
+    data class ChannelConfig(
+        val channelId: String,
+        val channelName: String,
+        val badgeEnabled: Boolean,
+        val vibrationEnabled: Boolean,
+        val vibrationPattern: LongArray,
+        val lightsEnabled: Boolean,
+        val lightsColor: Int,
+        val channelSound: Int
+    )
     val defaultNotificationIcon: Int
         get() = getResourceId("drawable", "default_notification_icon")
 
@@ -21,35 +31,24 @@ open class PpgConfig(
     val hmsAppId: String
         get() = getStringResource("string", "default_hms_app_id")
 
-    val defaultChannelId: String
-        get() = getStringResource("string", "default_channel_id", "ppg_default_channel")
 
-    val defaultChannelName: String
-        get() = getStringResource("string", "default_channel_name", "PPG default channel")
-
-    val defaultChannelBadgeEnabled: Boolean
-        get() = getBooleanResource("bool", "default_channel_badge_enabled", false)
-
-    val defaultChannelVibrationEnabled: Boolean
-        get() = getBooleanResource("bool", "default_channel_vibration_enabled", false)
-
-    val defaultChannelSound: Int
-        get() {
-            val soundId = getStringResource("string", "default_channel_sound", "")
-            if (soundId == "") {
-                return 0
-            }
-            return getResourceId("raw", soundId)
+    fun getChannelConfig(channelResourcesName: String): ChannelConfig {
+        val channelId = getStringResource("string", channelResourcesName + "_channel_id", "ppg_default_channel")
+        val channelName = getStringResource("string", channelResourcesName + "_channel_name", "PPG default channel")
+        val badgeEnabled = getBooleanResource("bool", channelResourcesName + "_channel_badge_enabled", false)
+        val vibrationEnabled = getBooleanResource("bool", channelResourcesName + "_channel_vibration_enabled", false)
+        val vibrationPattern = getLongArrayResource("array", channelResourcesName + "_channel_vibration_pattern", longArrayOf())
+        val lightsEnabled = getBooleanResource("bool", channelResourcesName + "_channel_lights_enabled", false)
+        val lightsColor = getResourceId("color", channelResourcesName + "_lights_color")
+        var channelSound = 0
+        val soundId = getStringResource("string", channelResourcesName + "_channel_sound", "")
+        if (soundId != ""){
+            channelSound = getResourceId("raw", soundId)
         }
 
-    val defaultChannelVibrationPattern: LongArray
-        get() = getLongArrayResource("array", "default_vibration_pattern", longArrayOf())
 
-    val defaultChannelLightsEnabled: Boolean
-        get() = getBooleanResource("bool", "default_channel_lights_enabled", false)
-
-    val defaultChannelLightsColor: Int
-        get() = getResourceId("color", "default_lights_color")
+        return ChannelConfig(channelId, channelName, badgeEnabled, vibrationEnabled, vibrationPattern, lightsEnabled, lightsColor, channelSound)
+    }
 
     private fun getResourceId(type: String, name: String): Int {
         return try {

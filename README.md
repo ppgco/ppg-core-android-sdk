@@ -63,7 +63,7 @@ Using that data you can calculate statistics or do some of your business logic.
 // build.gradle (:app)
 dependencies {  
 // PPG Core jitpack
-  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.30"
+  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.31"
 // FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
@@ -111,29 +111,56 @@ To satisfy required parameters for PPG Core sdk you should create .xml file with
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Required fields  -->
+    <!-- Choose HMS or FCM - remove other one -->
     <string name="default_fcm_project_id">Get_value_from_google-services.json</string> 
     <string name="default_hms_app_id">Get_value_from_hms_developer_account</string>
-    <!-- Choose HMS or FCM - remove other one -->
     <drawable name="default_notification_icon">@drawable/ic_launcher_foreground</drawable>
     <!-- Optional fields -->
+    <!-- Default channel -->
     <string name="default_channel_id">ppg_core_default</string>
     <string name="default_channel_name">PPG Core Default Channel</string>
     <bool name="default_channel_badge_enabled">true</bool>
     <bool name="default_channel_vibration_enabled">true</bool>
-    <string-array name="default_vibration_pattern">0, 1000, 500, 1500, 1000</string-array>
+    <string-array name="default_channel_vibration_pattern">0, 1000, 500, 1500, 1000</string-array>
     <bool name="default_channel_lights_enabled">true</bool>
     <color name="default_lights_color">#ff00ff</color>
     <string name="default_channel_sound">magic_tone</string>
+
+    <!-- Second channel -->
+    <string name="second_channel_id">second_channel</string>
+    <string name="second_channel_name">second</string>
+    <bool name="second_channel_badge_enabled">false</bool>
+    <bool name="second_channel_vibration_enabled">true</bool>
+    <string-array name="second_channel_vibration_pattern">0, 4000, 1000, 4000, 1000</string-array>
+    <bool name="second_channel_lights_enabled">true</bool>
+    <string name="second_channel_lights_color">#FF0000</string>
+    <string name="second_channel_sound">magic_tone_2</string>
 </resources>
 ```
+> **IMPORTANT** Be careful when naming variables in resources as they are directly related to **channelName** retrieved from notification payload. If your payload will contain channel name that does not exist in resources file, default channel willl be used. When creating resources variables for your channels, follow the example blueprint below: 
+```xml
+<!--
+   Replace <placeholder> with name of your channel.
+   You can use this name to send notifications via that channel (channelName
+   in payload)
+-->
+<string name="<placeholder>_channel_id">your_channel_id</string>
+<string name="<placeholder>_channel_name">Your channel name</string>
+<bool name="<placeholder>_channel_badge_enabled">true</bool>
+<bool name="<placeholder>_channel_vibration_enabled">true</bool>
+<string-array name="<placeholder>_channel_vibration_pattern">0, 1000, 500, 500, 1000</string-array>
+<bool name="<placeholder>_channel_lights_enabled">true</bool>
+<string name="<placeholder>_channel_lights_color">#FF0000</string>
+<string name="<placeholder>_channel_sound">your_sound_file_name</string>
+```
+
 Default channel badge is set to true by default. You can modify badge number in notification payload. (See send notification)
 
 Vibration pattern - (before start delay, first vibration duration, between vibrations delay, second vibration duration, after vibrations delay). Values in milliseconds.
 
 To set channel sound you have to place your sound file in `res/raw/` folder and set it's name in like in example above. (without extension) 
-
-Support for adding more than one default channel will be added soon. 
-> **IMPORTANT:** Be careful when setting notification channel options. Once a channel is set, its settings cannot be overriden. Consider testing different settings on staging environment before production release. However you can change name of default channel to create new channel with new settings.
+ 
+> **IMPORTANT:** Be careful when setting notification channel options. Once a channel is set, its settings cannot be overriden. Consider testing different settings on staging environment before production release. However you can create more channels with different names and new settings as in example above (default_channel, second_channel). If you won't provide any channel settings, default channel with default settings will be created. 
 
 ## 3. AndroidManifest.xml
 

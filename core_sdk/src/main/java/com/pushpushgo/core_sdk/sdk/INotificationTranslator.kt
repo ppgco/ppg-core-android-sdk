@@ -6,6 +6,7 @@ import com.pushpushgo.core_sdk.sdk.message.MessageMetadataRaw
 import com.pushpushgo.core_sdk.sdk.notification.PpgNotification
 import com.pushpushgo.core_sdk.sdk.notification.PpgRawNotification
 import com.pushpushgo.core_sdk.sdk.notification.RemotePpgMessage
+import com.pushpushgo.core_sdk.sdk.notification.SilentPpgMessage
 
 interface INotificationTranslator<T> {
     fun getNotification(remoteMessage: T): PpgRawNotification
@@ -21,9 +22,7 @@ interface INotificationTranslator<T> {
             }
             is PpgRawNotification.Silent -> {
                 PpgNotification.Silent(
-                    MessageMetadata.create(
-                        Gson().fromJson(msg.data, MessageMetadataRaw::class.java)
-                    )
+                    Gson().fromJson(msg.data, SilentPpgMessage::class.java)
                 )
             }
             is PpgRawNotification.Unknown -> PpgNotification.Unknown()

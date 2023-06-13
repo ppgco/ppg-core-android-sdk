@@ -15,6 +15,6 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     }
 
     fun ppgNotify(payload: PpgNotification) {
-        ppgNotificationService.notify(payload)
+        ppgNotificationService.notify(payload, fun(_: String){} )
     }
 }

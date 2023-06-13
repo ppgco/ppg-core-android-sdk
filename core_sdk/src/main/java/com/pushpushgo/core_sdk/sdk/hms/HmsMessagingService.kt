@@ -11,6 +11,11 @@ abstract class HmsMessagingService : HmsMessageService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         ppgNotificationService.notify(
             hmsNotificationTranslator.translate(remoteMessage),
+            ::onExternalData
         )
+    }
+
+    open fun onExternalData(data: String) {
+
     }
 }

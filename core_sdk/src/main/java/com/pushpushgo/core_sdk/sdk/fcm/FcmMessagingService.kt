@@ -11,6 +11,11 @@ abstract class FcmMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         ppgNotificationService.notify(
             fcmNotificationTranslator.translate(remoteMessage),
+            ::onExternalData
         )
+    }
+
+    open fun onExternalData(data: String){
+
     }
 }

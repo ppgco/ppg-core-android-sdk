@@ -27,13 +27,12 @@ data class RemotePpgMessage(
     val smallIcon: String? = null,
     val actions: List<Action> = listOf(),
     val defaultAction: String? = null,
-    val sound: String? = null,
     val badge: Int? = null,
-    val vibration: List<Long>? = listOf()
+    val channelName: String = "default",
+    val externalData: String?
 
 ) {
     companion object {
-        const val SILENT_DATA_KEY = "_silent"
         const val PPG_DATA_KEY = "_ppg"
         const val INTENT_DATA_KEY = "data"
         const val INTENT_ACTION_NAME_KEY = "actionName"

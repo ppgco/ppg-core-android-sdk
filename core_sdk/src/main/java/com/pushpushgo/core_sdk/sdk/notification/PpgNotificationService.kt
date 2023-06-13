@@ -36,10 +36,12 @@ class PpgNotificationService(
     private fun getUniqueNotificationId() = Random.nextInt(0, Int.MAX_VALUE)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(): NotificationChannel {
-        val soundUri: Uri = if (config.defaultChannelSound != 0) {
+    private fun createNotificationChannel(remoteMessage: RemotePpgMessage): NotificationChannel {
+        val channelName: String = remoteMessage.channelName
+        val channelConfig = config.getChannelConfig(channelName)
+        val soundUri: Uri = if (channelConfig.channelSound != 0) {
             Uri.parse("android.resource://" + context.packageName + "/"
-                    + config.defaultChannelSound)
+                    + channelConfig.channelSound)
         } else {
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         }
@@ -47,19 +49,19 @@ class PpgNotificationService(
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .setUsage(AudioAttributes.USAGE_NOTIFICATION)
             .build()
-        val remoteVibrationPattern = config.defaultChannelVibrationPattern
+        val remoteVibrationPattern = channelConfig.vibrationPattern
 
         return NotificationChannel(
-            config.defaultChannelId,
-            config.defaultChannelName,
+            channelConfig.channelId,
+            channelConfig.channelName,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            setShowBadge(config.defaultChannelBadgeEnabled)
-            enableVibration(config.defaultChannelVibrationEnabled)
+            setShowBadge(channelConfig.badgeEnabled)
+            enableVibration(channelConfig.vibrationEnabled)
             vibrationPattern = remoteVibrationPattern
             setSound(soundUri, attributes)
-            enableLights(config.defaultChannelLightsEnabled)
-            lightColor = config.defaultChannelLightsColor
+            enableLights(channelConfig.lightsEnabled)
+            lightColor = channelConfig.lightsColor
         }
     }
 
@@ -140,8 +142,11 @@ class PpgNotificationService(
         context: Context
     ): Notification {
 
+        val channelName: String = remoteMessage.channelName
+        val channelConfig = config.getChannelConfig(channelName)
+
         val notificationBuilder =
-            NotificationCompat.Builder(context, config.defaultChannelId)
+            NotificationCompat.Builder(context, channelConfig.channelId)
 
         // Setup default behaviour and bind handler on close
         notificationBuilder
@@ -225,16 +230,16 @@ class PpgNotificationService(
         // Support for API < 26
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             var defaults = 0
-            if (config.defaultChannelVibrationPattern.isNotEmpty()) {
-                val vibrationPattern = config.defaultChannelVibrationPattern
+            if (channelConfig.vibrationPattern.isNotEmpty()) {
+                val vibrationPattern = channelConfig.vibrationPattern
                 notificationBuilder.setVibrate(vibrationPattern)
             } else {
                 defaults = Notification.DEFAULT_VIBRATE
             }
 
-            if (config.defaultChannelSound != 0) {
+            if (channelConfig.channelSound != 0) {
                 val soundUri = Uri.parse("android.resource://" + context.packageName + "/"
-                        + config.defaultChannelSound)
+                        + channelConfig.channelSound)
                 notificationBuilder.setSound(
                     soundUri
                 )
@@ -242,8 +247,8 @@ class PpgNotificationService(
                 defaults = defaults or Notification.DEFAULT_SOUND
             }
 
-            if (config.defaultChannelLightsEnabled) {
-                notificationBuilder.setLights(config.defaultChannelLightsColor, 500, 500)
+            if (channelConfig.lightsEnabled) {
+                notificationBuilder.setLights(channelConfig.lightsColor, 500, 500)
             } else {
                 defaults = defaults or Notification.DEFAULT_LIGHTS
             }
@@ -254,7 +259,7 @@ class PpgNotificationService(
         return notificationBuilder.build()
     }
 
-    fun notify(notification: PpgNotification) {
+    fun notify(notification: PpgNotification, onExternalDataCallback: (data: String) -> Unit) {
         when (notification) {
             is PpgNotification.Data -> {
 
@@ -276,7 +281,7 @@ class PpgNotificationService(
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     notificationManager.createNotificationChannel(
-                        createNotificationChannel()
+                        createNotificationChannel(notification.notification)
                     )
                 }
 
@@ -290,19 +295,22 @@ class PpgNotificationService(
                         notification.notification.getMessageMetadata()
                     )
                 )
+                notification.notification.externalData?.let { onExternalDataCallback(it) }
             }
 
             is PpgNotification.Silent -> {
                 httpClient.registerDelivered(
                     NotificationDelivered(
-                        notification.metadata
+                        notification.notification.getMessageMetadata()
                     )
                 )
+                notification.notification.externalData?.let { onExternalDataCallback(it) }
             }
 
             is PpgNotification.Unknown -> {
                 TODO("Handle Unknown Message")
             }
+
         }
     }
 

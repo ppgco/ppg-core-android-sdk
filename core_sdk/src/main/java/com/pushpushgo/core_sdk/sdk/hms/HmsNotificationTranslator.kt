@@ -7,6 +7,7 @@ import com.pushpushgo.core_sdk.sdk.INotificationTranslator
 import com.pushpushgo.core_sdk.sdk.extensions.getStringOrNull
 import com.pushpushgo.core_sdk.sdk.notification.PpgRawNotification
 import com.pushpushgo.core_sdk.sdk.notification.RemotePpgMessage
+import com.pushpushgo.core_sdk.sdk.notification.SilentPpgMessage
 
 open class HmsNotificationTranslator : INotificationTranslator<RemoteMessage> {
     override fun getNotification(remoteMessage: RemoteMessage): PpgRawNotification {
@@ -19,7 +20,7 @@ open class HmsNotificationTranslator : INotificationTranslator<RemoteMessage> {
                 val ppgData = jsonObject.getStringOrNull(RemotePpgMessage.PPG_DATA_KEY)
                 PpgRawNotification.Data(ppgData.toString())
             }
-            jsonObject.has(RemotePpgMessage.SILENT_DATA_KEY) -> {
+            jsonObject.has(SilentPpgMessage.SILENT_DATA_KEY) -> {
                 PpgRawNotification.Silent(jsonObject.toString())
             }
 
