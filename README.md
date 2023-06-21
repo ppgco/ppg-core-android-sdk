@@ -262,4 +262,5 @@ override fun onCreate(savedInstanceState: Bundle?) {
 **Save subscription in your database. Now you can send notifications via our API [Example JS sdk sender](https://github.com/ppgco/ppg-core-js-sdk/tree/main/examples/sender)**
 
 # Support & production run
+All API Keys in available in this documentation allows you to test service with very low rate-limits.
 If you need production credentials or just help with integration please visit us in [discord](https://discord.gg/NVpUWvreZa) or just mail to [support@pushpushgo.com](mailto:support@pushpushgo.com)
