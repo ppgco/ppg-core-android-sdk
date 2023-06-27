@@ -35,11 +35,11 @@ class PpgCoreClient(
         }
     }
 
-    private fun check(): PermissionState {
+    fun check(): PermissionState {
         return PermissionsUtils.check(activity)
     }
 
-    private fun getSubscription(callback: (subscription: Subscription) -> Unit) {
+    fun getSubscription(callback: (subscription: Subscription) -> Unit) {
         return this.provider.getSubscription(callback)
     }
 
