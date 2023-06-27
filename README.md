@@ -202,7 +202,6 @@ also add intent filter for handling notification events:
 ```xml
 <intent-filter>  
  <action android:name="PUSH_CLICK" />  
- <action android:name="PUSH_CLOSE" />  
 </intent-filter>
 ```
 to handle web/app/deepLinks redirects add another intent filter in your activity (this cannot be done in `.LAUNCHER` intent):
