@@ -63,7 +63,7 @@ Using that data you can calculate statistics or do some of your business logic.
 // build.gradle (:app)
 dependencies {  
 // PPG Core jitpack
-  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.31"
+  implementation "com.github.ppgco:ppg-core-android-sdk:0.0.33"
 // FCM - use this for the Android system
   implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'  
   implementation platform('com.google.firebase:firebase-bom:31.2.3')  
