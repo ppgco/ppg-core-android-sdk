@@ -99,21 +99,18 @@ class PpgNotificationService(
         remoteMessage: RemotePpgMessage,
     ): PendingIntent {
 
-
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-            ?: throw java.lang.RuntimeException("Unable to instantiate")
-
-        intent
+        val deleteIntent = Intent(context, PpgOnCloseReceiver::class.java)
+        deleteIntent.action = NotificationActionType.PUSH_CLOSE.toString()
+        deleteIntent
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             .apply {
-                putExtra(RemotePpgMessage.INTENT_DATA_KEY, Gson().toJson(remoteMessage))
-                putExtra(RemotePpgMessage.PPG_INTENT_IDENTIFIER, NotificationActionType.PUSH_CLOSE.toString())
-            }
-
-        return PendingIntent.getActivity(
+            putExtra(RemotePpgMessage.INTENT_DATA_KEY, Gson().toJson(remoteMessage))
+            putExtra(RemotePpgMessage.PPG_INTENT_IDENTIFIER, NotificationActionType.PUSH_CLOSE.toString())
+        }
+        return PendingIntent.getBroadcast(
             context,
             getUniqueNotificationId(),
-            intent,
+            deleteIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }

@@ -73,7 +73,7 @@ open class PpgMessageIntentHandler(
         }
     }
 
-    private fun handleCloseAction(_context: Context, remotePpgMessage: RemotePpgMessage) {
+    private fun handleCloseAction(remotePpgMessage: RemotePpgMessage) {
         httpClient.registerClosed(
             NotificationClosed(
                 remotePpgMessage.getMessageMetadata()
@@ -117,7 +117,7 @@ open class PpgMessageIntentHandler(
 
         when (NotificationActionType.valueOf(ppgIntentIdentifier)) {
             NotificationActionType.PUSH_CLOSE -> {
-                onNotificationClose(context, ppgRemoteMessage)
+                onNotificationClose(ppgRemoteMessage)
             }
             NotificationActionType.PUSH_CLICK -> {
                 intent.getStringExtra(RemotePpgMessage.INTENT_ACTION_NAME_KEY)?.let { actionName ->
@@ -133,10 +133,9 @@ open class PpgMessageIntentHandler(
     }
 
     protected open fun onNotificationClose(
-        context: Context,
         ppgRemoteMessage: RemotePpgMessage
     ) {
-        handleCloseAction(context, ppgRemoteMessage)
+        handleCloseAction(ppgRemoteMessage)
     }
 
     protected open fun onNotificationClick(

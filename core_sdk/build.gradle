@@ -63,7 +63,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.ppgco'
                 artifactId = 'ppg-core-android-sdk'
-                version = '0.0.31'
+                version = '0.0.32'
             }
         }
     }

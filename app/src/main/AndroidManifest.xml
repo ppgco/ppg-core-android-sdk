@@ -43,7 +43,6 @@
 
             <intent-filter>
                 <action android:name="PUSH_CLICK" />
-                <action android:name="PUSH_CLOSE" />
             </intent-filter>
 
         </activity>

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.pushpushgo.core_sdk.sdk.PpgMessageIntentHandler
 import com.pushpushgo.core_sdk.sdk.PpgConfig
@@ -36,11 +35,11 @@ class PpgCoreClient(
         }
     }
 
-    fun check(): PermissionState {
+    private fun check(): PermissionState {
         return PermissionsUtils.check(activity)
     }
 
-    fun getSubscription(callback: (subscription: Subscription) -> Unit) {
+    private fun getSubscription(callback: (subscription: Subscription) -> Unit) {
         return this.provider.getSubscription(callback)
     }
 
@@ -65,8 +64,8 @@ class PpgCoreClient(
             }
             PermissionState.ASK -> {
                 if (Build.VERSION.SDK_INT > 32) {
-                    PermissionsUtils.requestPermissions(activity) { result ->
-                        if (result == true) {
+                    PermissionsUtils.requestPermissions(activity) { result: Boolean ->
+                        if (result) {
                             getSubscription(callback)
                         }
                     }
